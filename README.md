@@ -1,11 +1,11 @@
 
 # @BrunoMon/odata-fetch-factory
 
-[![GitHub issues](https://img.shields.io/github/issues/BrunoMon/odataFetchFactory)](https://github.com/BrunoMon/odataFetchFactory/issues)
-![npm](https://img.shields.io/npm/v/@brunomon/odataFetchFactory?style=flat-square)
-![GitHub](https://img.shields.io/github/license/brunomon/odataFetchFactory)
+![npm](https://img.shields.io/npm/v/@brunomon/odata-fetch-factory?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/BrunoMon/odata-fetch-factory)
+![GitHub](https://img.shields.io/github/license/brunomon/odata-fetch-factory)
 
-fetch function setted for odata endpoint
+fetch function setted for odata V4 endpoint
 
 ## Install
 
@@ -33,26 +33,46 @@ const cities = ODataEntity(myOdataService, "cities")
 cities.get({
     filter: "State eq 'Florida'",
     orderby: "Name"
+}).then(data => {
+    console.log(data)
+}).catch(err=>{
+    console.log(err)
 })
 
 cities.post({
     Name: "Miami",
     State: "Florida"
+}).then(data => {
+    console.log(data)
+}).catch(err=>{
+    console.log(err)
 })
 
 cities.put({
     Id: 5,
     Name: "Miami",
     state:"Florida"
+}).then(data => {
+    console.log(data)
+}).catch(err=>{
+    console.log(err)
 })
 
 cities.patch({
     Id: 5,
     state:"Texas"
+}).then(data => {
+    console.log(data)
+}).catch(err=>{
+    console.log(err)
 })
 
 cities.delete({
     Id: 5
+}).then(data => {
+    console.log(data)
+}).catch(err=>{
+    console.log(err)
 })
 
 ```

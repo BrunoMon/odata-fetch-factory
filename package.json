@@ -1,0 +1,14 @@
+{
+    "name": "@brunomon/odata-fetch-factory",
+    "version": "1.0.0",
+    "description": "fetch function setted for odata endpoint",
+    "license": "MIT",
+    "repository": "brunomon/odata-fetch-factory",
+    "main": "index.js",
+    "keywords": [
+      "odata",
+      "npm",
+      "package",
+      "brunomon"
+    ]
+  }

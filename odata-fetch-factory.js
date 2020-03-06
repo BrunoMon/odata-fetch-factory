@@ -17,7 +17,8 @@ export const ODataFetchFactory = ({
         select = null,
         apply = null,
         skip = null,
-        metadata = false
+        metadata = false,
+        customParameters = null
     } = {}) => {
         const _validateParameters = () => {
             const METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
@@ -89,6 +90,7 @@ export const ODataFetchFactory = ({
                 if (select) url += "&$select=" + select;
                 if (apply) url += "&$apply=" + apply;
                 if (skip) url += "&$skip=" + skip;
+                if (customParameters) url += "&" + customParameters;
             }
             return fetch(url, fetchParams)
                 .then(response => response.json())

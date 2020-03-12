@@ -16,7 +16,8 @@ export const ODataEntity = (ODataFetch, entity) => {
                 select = null,
                 apply = null,
                 skip = null,
-                customParameters = null
+                customParameters = null,
+                count
             }) =>
             ODataFetch({
                 method: "GET",
@@ -29,7 +30,8 @@ export const ODataEntity = (ODataFetch, entity) => {
                 select: select,
                 apply: apply,
                 skip: skip,
-                customParameters: customParameters
+                customParameters: customParameters,
+                count: count
             }),
         post: body => {
             return ODataFetch({

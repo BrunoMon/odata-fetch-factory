@@ -18,7 +18,8 @@ export const ODataFetchFactory = ({
         apply = null,
         skip = null,
         metadata = false,
-        customParameters = null
+        customParameters = null,
+        count = null
     } = {}) => {
         const _validateParameters = () => {
             const METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
@@ -91,11 +92,13 @@ export const ODataFetchFactory = ({
                 if (apply) url += "&$apply=" + apply;
                 if (skip) url += "&$skip=" + skip;
                 if (customParameters) url += "&" + customParameters;
+                if (count) url += "&$count=true"
             }
             return fetch(url, fetchParams)
                 .then(response => response.json())
                 .then(data => {
                     if (data == undefined) throw new Error("No se puede acceder al servidor, verifique sus credenciales")
+                    data.value.__odataCount = (data["@odata.count"]) || 0
                     if (data.value != undefined) return data.value
                     if (data.error) throw new Error(data.error.message)
                     return data

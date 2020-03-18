@@ -98,8 +98,10 @@ export const ODataFetchFactory = ({
                 .then(response => response.json())
                 .then(data => {
                     if (data == undefined) throw new Error("No se puede acceder al servidor, verifique sus credenciales")
-                    data.value.__odataCount = (data["@odata.count"]) || 0
-                    if (data.value != undefined) return data.value
+                    if (data.value != undefined) {
+                        if (typeof data.value === "object") data.value.__odataCount = (data["@odata.count"]) || 0
+                        return data.value
+                    }
                     if (data.error) throw new Error(data.error.message)
                     return data
                 })

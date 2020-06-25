@@ -19,7 +19,9 @@ export const ODataFetchFactory = ({
         skip = null,
         metadata = false,
         customParameters = null,
-        count = null
+        count = null,
+        credentials = "omit",
+        token = ""
     } = {}) => {
         const _validateParameters = () => {
             const METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
@@ -55,9 +57,10 @@ export const ODataFetchFactory = ({
         let url = domain + "/odata/";
         const fetchParams = {
             method: method,
-            credentials: "include",
+            credentials: credentials,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         };
         if (method != "GET") {

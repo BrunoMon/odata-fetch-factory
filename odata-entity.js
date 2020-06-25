@@ -17,7 +17,9 @@ export const ODataEntity = (ODataFetch, entity) => {
                 apply = null,
                 skip = null,
                 customParameters = null,
-                count
+                count,
+                credentials,
+                token
             }) =>
             ODataFetch({
                 method: "GET",
@@ -31,7 +33,9 @@ export const ODataEntity = (ODataFetch, entity) => {
                 apply: apply,
                 skip: skip,
                 customParameters: customParameters,
-                count: count
+                count: count,
+                credentials: credentials,
+                token: token
             }),
         post: body => {
             return ODataFetch({

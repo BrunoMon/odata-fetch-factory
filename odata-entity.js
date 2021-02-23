@@ -37,48 +37,54 @@ export const ODataEntity = (ODataFetch, entity) => {
                 credentials: credentials,
                 token: token
             }),
-        post: body => {
+        post: (body,token) => {
             return ODataFetch({
                 method: "POST",
                 entity: entity,
-                body: body
+                body: body,
+                token:token
             });
         },
-        action: (action, body, key) => {
+        action: (action, body, key,token) => {
             return ODataFetch({
                 method: "POST",
                 action: action,
                 entity: entity,
                 body: body,
-                key: key
+                key: key,
+                token:token
             });
         },
-        execute: (funct, body) => {
+        execute: (funct, body,token) => {
             return ODataFetch({
                 method: "GET",
                 funct: funct,
-                body: body
+                body: body,
+                token:token
             });
         },
-        put: body => {
+        put: (body,token) => {
             return ODataFetch({
                 method: "PUT",
                 entity: entity,
-                body: body
+                body: body,
+                token:token
             });
         },
-        delete: body => {
+        delete: (body,token) => {
             return ODataFetch({
                 method: "DELETE",
                 entity: entity,
-                body: body
+                body: body,
+                token:token
             });
         },
-        patch: body => {
+        patch: (body,token) => {
             return ODataFetch({
                 method: "PATCH",
                 entity: entity,
-                body: body
+                body: body,
+                token:token
             });
         },
         getEmpty: () => {

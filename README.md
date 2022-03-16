@@ -5,7 +5,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/BrunoMon/odata-fetch-factory)
 ![GitHub](https://img.shields.io/github/license/brunomon/odata-fetch-factory)
 
-fetch function setted for odata V4 endpoint
+fetch function setted for odata V4 endpoints
 
 ## Install
 

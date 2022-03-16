@@ -1,56 +1,24 @@
+/** @format */
+
 const domains = [];
-export const ODataFetchFactory = ({
-    fetch,
-    domain = ""
-}) => {
-    return ({
-        method = "GET",
-        body = null,
-        entity = null,
-        action = null,
-        funct = null,
-        key = null,
-        filter = null,
-        expand = null,
-        top = null,
-        orderby = null,
-        select = null,
-        apply = null,
-        skip = null,
-        metadata = false,
-        customParameters = null,
-        count = null,
-        credentials = "omit",
-        token = ""
-    } = {}) => {
+export const ODataFetchFactory = ({ fetch, domain = "" }) => {
+    return ({ method = "GET", body = null, entity = null, action = null, funct = null, key = null, filter = null, expand = null, top = null, orderby = null, select = null, apply = null, skip = null, metadata = false, customParameters = null, count = null, credentials = "omit", token = "" } = {}) => {
         const _validateParameters = () => {
             const METHODS = ["GET", "POST", "PATCH", "PUT", "DELETE"];
             if (method != "POST" && action != null) {
-                throw new Error(
-                    "odata-fetch: el metodo " +
-                    method +
-                    " no es válido para invocar un 'action'"
-                );
+                throw new Error("odata-fetch: el metodo " + method + " no es válido para invocar un 'action'");
             }
             if (method != "GET" && funct != null) {
-                throw new Error(
-                    "odata-fetch: el metodo " +
-                    method +
-                    " no es válido para invocar un 'function'"
-                );
+                throw new Error("odata-fetch: el metodo " + method + " no es válido para invocar un 'function'");
             }
-            if (!METHODS.find(m => m == method)) {
+            if (!METHODS.find((m) => m == method)) {
                 throw new Error("odata-fetch: parámetro 'method' no válido");
             }
             if (method == "GET" && body != null) {
-                throw new Error(
-                    "odata-fetch: el parámetro 'body' debe estar vacío cuando el parámetro 'method' es 'GET'"
-                );
+                throw new Error("odata-fetch: el parámetro 'body' debe estar vacío cuando el parámetro 'method' es 'GET'");
             }
             if (entity == null && action == null && funct == null && !metadata) {
-                throw new Error(
-                    "odata-fetch: debe especidifcar el menos uno de estos parametros 'entity','action','funct', 'metadata'"
-                );
+                throw new Error("odata-fetch: debe especidifcar el menos uno de estos parametros 'entity','action','funct', 'metadata'");
             }
         };
         _validateParameters();
@@ -59,9 +27,9 @@ export const ODataFetchFactory = ({
             method: method,
             credentials: credentials,
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            }
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
         };
         if (method != "GET") {
             fetchParams.body = JSON.stringify(body);
@@ -86,7 +54,7 @@ export const ODataFetchFactory = ({
             }
             if (entity && !action && !funct) {
                 if (key) entity = entity + "(" + key + ")";
-                url += entity + "/?"
+                url += entity + "/?";
                 if (expand) url += "$expand=" + expand;
                 if (top) url += "&$top=" + top;
                 if (filter) url += "&$filter=" + filter;
@@ -95,21 +63,24 @@ export const ODataFetchFactory = ({
                 if (apply) url += "&$apply=" + apply;
                 if (skip) url += "&$skip=" + skip;
                 if (customParameters) url += "&" + customParameters;
-                if (count) url += "&$count=true"
+                if (count) url += "&$count=true";
             }
             return fetch(url, fetchParams)
-                .then(response => response.json())
-                .then(data => {
-                    if (data == undefined) throw new Error("No se puede acceder al servidor, verifique sus credenciales")
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data == undefined) throw new Error("No se puede acceder al servidor, verifique sus credenciales");
                     if (data.value != undefined) {
-                        if (typeof data.value === "object") data.value.__odataCount = (data["@odata.count"]) || 0
-                        return data.value
+                        if (typeof data.value === "object") data.value.__odataCount = data["@odata.count"] || 0;
+                        return data.value;
                     }
-                    if (data.error) throw new Error(data.error.message)
-                    return data
-                })
+                    if (data.error) {
+                        if (data.error.innererror) throw new Error(data.error.innererror.message);
+                        throw new Error(data.error.message);
+                    }
+                    return data;
+                });
         } else {
-            const doma = domains.find(dom => dom.domain == domain);
+            const doma = domains.find((dom) => dom.domain == domain);
             if (doma != undefined) {
                 return new Promise((resoleve, reject) => {
                     resoleve(doma.meta);
@@ -117,23 +88,19 @@ export const ODataFetchFactory = ({
             } else {
                 url += "$metadata";
                 return fetch(url, fetchParams)
-                    .then(
-                        response => response.text()
-                    )
-                    .then(str => {
-                        const meta = xmlToJson(
-                            new window.DOMParser().parseFromString(str, "text/xml")
-                        )["edmx:Edmx"]["edmx:DataServices"]["Schema"][0];
+                    .then((response) => response.text())
+                    .then((str) => {
+                        const meta = xmlToJson(new window.DOMParser().parseFromString(str, "text/xml"))["edmx:Edmx"]["edmx:DataServices"]["Schema"][0];
                         domains.push({
                             domain: domain,
-                            meta: meta
+                            meta: meta,
                         });
                         return meta;
                     });
             }
         }
     };
-}
+};
 
 function xmlToJson(xml) {
     var obj = {};
